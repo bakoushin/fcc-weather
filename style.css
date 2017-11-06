@@ -1,0 +1,185 @@
+* {
+    box-sizing: border-box;
+}
+    
+.container {
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color:#000;
+    /* background-image: url(https://images.unsplash.com/photo-1421081177127-339f586c9b49?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&s=b25643f4f2280318787b6513be7e1bcb); */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.container::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; 
+    background-color: inherit;
+    opacity: .33;
+    transition: 1s ease opacity;
+}
+
+.container--faded::before {
+    opacity: 1;
+    z-index: 1;
+}
+
+.information {
+    color: #fff;
+    opacity: .9;
+    margin: auto;
+}
+
+.location {
+    font: 1rem/1 'Roboto Mono', monospace;
+    text-align: center;
+    margin: 1.5rem 0 1.5rem;
+}
+
+.temperature {
+    font: 7rem/1 'Rubik', sans-serif;
+    text-align: center;
+    margin: 1.5rem 0 .5rem;
+}
+
+.temperature::after {
+    content: '°';  
+}
+
+.weather-description {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: .5rem 0 2rem;
+}
+
+.weather-description__text {
+    font: 2rem/1 'Rubik', sans-serif;
+}
+
+.weather-description__icon {
+    width: 3rem;
+    height: 3rem;
+    margin-left: .5rem;
+}
+
+.details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    font: 1rem/1 'Roboto Mono', monospace;
+    text-align: center;
+}
+
+.details__element {
+    width: 3rem;
+    margin: 0 .5rem;
+}
+
+.details__value {
+    padding: 0.5rem 0;
+    font-size: 1rem;
+}
+
+.details__value--temperature::after {
+    content: '°';
+}
+
+.details__value--wind-speed::after {
+    content: ' m/s';
+}
+
+.details__value--humidity::after {
+    content: '%';
+}
+
+.details__header {
+    font-size: .66rem;
+    text-transform: uppercase;
+    opacity: .66;
+}
+
+.details__footer {
+    font-size: .8rem;
+}
+
+.units {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.units__element {
+    font: .66rem/4.5 'Roboto Mono', monspace;
+    display: block;
+    border: 1px solid #fff;
+    text-decoration: none;
+    color: #fff;
+    opacity: .9;
+    width: 9.5rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: .3rem;
+    transition: .3s ease background-color;
+}
+
+.units__element:first-child {
+    border-top-left-radius: 10rem;
+    border-bottom-left-radius: 10rem;
+    border-right: none;
+}
+
+.units__element:last-child {
+    border-top-right-radius: 10rem;
+    border-bottom-right-radius: 10rem;
+}
+
+.units__element--selected {
+    background-color: rgba(255, 255, 255, .2);
+}
+
+.author {
+    width: 100%;
+    margin: 1rem 0 .2rem;
+    font: .66rem/2.5 'Roboto Mono', monspace;
+    color: #fff;
+    opacity: .9;
+    text-align: center;
+}
+
+.author__link,
+.author__link:link,
+.author__link:visited,
+.author__link:hover,
+.author__link:active {
+    color: #fff;
+    opacity: .9;
+}
+
+@media screen and (min-width: 576px) {
+
+    .temperature {
+        font-size: 9rem;
+    }
+
+    .weather-description__text {
+        font-size: 3rem;
+    }
+
+    .details__block {
+        width: 4rem;
+    }
+
+}

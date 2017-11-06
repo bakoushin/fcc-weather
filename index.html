@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Local Weather</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Rubik:700" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container container--faded" id="container-js">
+        <div class="information">
+            <div class="location">
+                <span id="location-js"></span>,
+                <span id="country-js"></span>
+            </div>
+            <div class="temperature" id="temperature-current-js"></div>
+            <div class="weather-description">
+                <div class="weather-description__text" id="weather-text-js"></div>
+                <div class="weather-description__icon" id="weather-icon-js"></div>
+            </div>
+            <div class="details">
+                <div class="details__element">
+                    <div class="details__header">Min</div>
+                    <div class="details__value details__value--temperature" id="temperature-min-js"></div>
+                </div>
+                <div class="details__element">
+                    <div class="details__header">Max</div>
+                    <div class="details__value details__value--temperature" id="temperature-max-js"></div>
+                </div>
+                <div class="details__element">
+                    <div class="details__header">Wind</div>
+                    <div class="details__value details__value--wind-speed" id="wind-speed-js"></div>
+                    <div class="details__footer" id="wind-name-js"></div>
+                </div>
+                <div class="details__element">
+                    <div class="details__header">Humidity</div>
+                    <div class="details__value details__value--humidity" id="humidity-js"></div>
+                </div>
+                <div class="details__element">
+                    <div class="details__header">Pressure</div>
+                    <div class="details__value" id="pressure-js"></div>
+                    <div class="details__footer">mmHg</div>
+                </div>
+            </div>
+            <div class="units">
+                <a href="#" class="units__element units__element--selected" id="celsius-js">Celsius</a>
+                <a href="#" class="units__element" id="fahrenheit-js">Fahrenheit</a>
+            </div>
+        </div>
+        <div class="author" id="author-js">&nbsp;</div>
+    </div>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="script.js"></script>
+
+</html>
