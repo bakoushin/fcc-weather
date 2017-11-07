@@ -14,32 +14,63 @@ var celsiusButton = $('#celsius-js');
 var fahrenheitButton = $('#fahrenheit-js');
 var authorView = $('#author-js');
 
-var tempCelsius, tempFahrenheit;
-
-var Temperature = function (current, max, min) {
-  this.current = current;
-  this.max = max;
-  this.min = min;
+var Temperature = function () {
+  this.current = 0;
+  this.max = 0;
+  this.min = 0;
 }
 
-var updateTemperatureValues = function (temperature) {
-  temperatureCurrentView.text(temperature.current);
-  temperatureMaxView.text(temperature.max);
-  temperatureMinView.text(temperature.min);
+var temperature = {
+  'celsius': new Temperature(),
+  'fahrenheit': new Temperature(),
+  'setTemperatureType': function (temperatureType) {
+    if (this._isLocalStorageAvailable()) {
+      localStorage.setItem(this._localStorageKey, temperatureType);
+    }
+  },
+  'getTemperatureType': function () {
+    if (this._isLocalStorageAvailable()) {
+      temperatureType = localStorage.getItem(this._localStorageKey) || 'celsius';
+    } else {
+      temperatureType = 'celsius';
+    }
+    return temperatureType;
+  },
+  '_localStorageKey': 'fccLocalWeather_temperatureType',
+  // see: https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#Feature-detecting_localStorage
+  '_isLocalStorageAvailable': function() {
+    try {
+      if (!window.localStorage) return false;
+      else return true;
+    } catch(err) {
+      return false;
+    }
+  }
+};
+
+var updateTemperature = function (type) {
+  temp = temperature[type];
+  temperatureCurrentView.text(temp.current);
+  temperatureMaxView.text(temp.max);
+  temperatureMinView.text(temp.min);
+  if (type == 'celsius') {
+    celsiusButton.addClass('units__element--selected');
+    fahrenheitButton.removeClass('units__element--selected');
+  } else {
+    fahrenheitButton.addClass('units__element--selected');
+    celsiusButton.removeClass('units__element--selected');
+  }
+  temperature.setTemperatureType(type);
 }
 
 celsiusButton.click(function (event) {
   event.preventDefault();
-  celsiusButton.addClass('units__element--selected');
-  fahrenheitButton.removeClass('units__element--selected');
-  updateTemperatureValues(tempCelsius);
+  updateTemperature('celsius');
 });
 
 fahrenheitButton.click(function (event) {
   event.preventDefault();
-  fahrenheitButton.addClass('units__element--selected');
-  celsiusButton.removeClass('units__element--selected');
-  updateTemperatureValues(tempFahrenheit);
+  updateTemperature('fahrenheit');
 });
 
 if (navigator.geolocation) {
@@ -65,17 +96,16 @@ if (navigator.geolocation) {
         locationView.text(location);
         countryView.text(country);
         
-        tempCelsius = new Temperature(
-          Math.round(tempCurrent),
-          Math.round(tempMax),
-          Math.round(tempMin)
-        );
-        tempFahrenheit = new Temperature(
-          celsiusToFahrenheit(tempCurrent),
-          celsiusToFahrenheit(tempMax),
-          celsiusToFahrenheit(tempMin)
-        );
-        updateTemperatureValues(tempCelsius);
+        temperature.celsius.current = Math.round(tempCurrent);
+        temperature.celsius.max = Math.round(tempMax);
+        temperature.celsius.min = Math.round(tempMin);
+
+        temperature.fahrenheit.current = celsiusToFahrenheit(tempCurrent);
+        temperature.fahrenheit.max = celsiusToFahrenheit(tempMax);
+        temperature.fahrenheit.min = celsiusToFahrenheit(tempMin);
+
+        var temperatureType = temperature.getTemperatureType();
+        updateTemperature(temperatureType);
 
         weatherTextView.text(weatherText);
         if (weatherIconSrc) weatherIconView.append($(`<img src="${weatherIconSrc}">`));
