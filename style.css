@@ -11,7 +11,6 @@
     align-items: center;
     flex-direction: column;
     background-color:#000;
-    /* background-image: url(https://images.unsplash.com/photo-1421081177127-339f586c9b49?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&s=b25643f4f2280318787b6513be7e1bcb); */
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -27,7 +26,7 @@
     height: 100%; 
     background-color: inherit;
     opacity: .33;
-    transition: 1s ease opacity;
+    transition: 5s ease opacity;
 }
 
 .container--faded::before {
@@ -75,6 +74,11 @@
     margin-left: .5rem;
 }
 
+.weather-description__image {
+    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(grayScale=1)";
+    filter: grayscale(100%);    
+}
+
 .details {
     display: flex;
     flex-wrap: wrap;
@@ -84,8 +88,8 @@
 }
 
 .details__element {
-    width: 3rem;
-    margin: 0 .5rem;
+    min-width: 1.8rem;
+    margin: 0 .8rem;
 }
 
 .details__value {
@@ -103,6 +107,10 @@
 
 .details__value--humidity::after {
     content: '%';
+}
+
+.details__value--pressure::after {
+    content: ' mm';
 }
 
 .details__header {
