@@ -50,11 +50,21 @@ var temperature = {
   }
 };
 
+var animateValue = function(element, value) {
+  return element.animate({
+    counter: value
+  }, {
+    step: function (now) {
+        $(this).text(Math.floor(now));
+    }
+  });
+}
+
 var updateTemperature = function (type) {
   temp = temperature[type];
-  temperatureCurrentView.text(temp.current);
-  temperatureMaxView.text(temp.max);
-  temperatureMinView.text(temp.min);
+  animateValue(temperatureCurrentView, temp.current);
+  animateValue(temperatureMaxView, temp.max);
+  animateValue(temperatureMinView, temp.min);
   if (type == 'celsius') {
     celsiusButton.addClass('units__element--selected');
     fahrenheitButton.removeClass('units__element--selected');
