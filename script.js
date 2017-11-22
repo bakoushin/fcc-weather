@@ -1,3 +1,5 @@
+var loaderView = $('#loader-js');
+var loaderContentView = $('#loader-content-js');
 var containerView = $('#container-js');
 var temperatureCurrentView = $('#temperature-current-js');
 var temperatureMinView = $('#temperature-min-js');
@@ -11,6 +13,8 @@ var windSpeedView = $('#wind-speed-js');
 var celsiusButton = $('#celsius-js');
 var fahrenheitButton = $('#fahrenheit-js');
 var authorView = $('#author-js');
+var errorView = $('#error-js');
+var errorContentView = $('#error-content-js');
 
 var Temperature = function () {
   this.current = 0;
@@ -71,7 +75,9 @@ fahrenheitButton.click(function (event) {
   updateTemperature('fahrenheit');
 });
 
-if (navigator.geolocation) {
+if (!navigator.geolocation) {
+  showError(`Oops! Your browser doesn't support geolocation.`);
+} else {
   navigator.geolocation.getCurrentPosition(function (location) {
     var latitude = location.coords.latitude;
     var longitude = location.coords.longitude;
@@ -106,8 +112,7 @@ if (navigator.geolocation) {
       pressureView.text(dPaToMmHg(pressure));
       windSpeedView.text(windSpeed);
 
-      containerView.removeClass('container--faded');
-  
+      hideLoader();
     })
     .catch(function (error) {
       console.log(error);
@@ -163,7 +168,20 @@ if (navigator.geolocation) {
     .catch(function (error) {
       console.log(error);
     });
+  }, function(err) {
+    showError(`Oops! ${err.message} (error code: ${err.code})`);
   });
+}
+
+var showError = function(text) {
+  errorView.text(text);
+  errorView.addClass('error--visible');
+  hideLoader();
+}
+
+var hideLoader = function() {
+  loaderView.addClass('loader--hidden');
+  loaderContentView.addClass('loader__content--hidden');
 }
 
 // convert temperature form Celsius to Fahrenheit degrees

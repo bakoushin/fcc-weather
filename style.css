@@ -31,7 +31,6 @@
 
 .container--faded::before {
     opacity: 1;
-    z-index: 1;
 }
 
 .information {
@@ -190,4 +189,106 @@
         width: 4rem;
     }
 
+}
+
+.loader {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 1000;
+    transition: .5s ease-out opacity .5s,
+        step-end visibility 1s;
+}
+
+.loader--hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader--visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.loader__pulse {
+    width: 60px;
+    height: 60px;
+    background-color: #fff;
+    border-radius: 100px;
+    animation: 1.5s infinite pulse;
+    transition: .5s step-end height;    
+}
+
+.loader__pulse::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    background: #000;
+    animation: 1.5s infinite pulse-inside .25s;
+}
+
+.loader__content::after {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0;
+    transition: .5s ease-out opacity;
+}
+
+.loader__content--hidden::after {
+    opacity: 1;
+}
+
+@keyframes pulse {
+    0% { 
+        transform: scale(0); 
+        opacity: .2;  
+    }
+    66% {
+        opacity: 1
+    }
+    100% { 
+        transform: scale(1); 
+        opacity: .2;
+    }  
+}
+  
+@keyframes pulse-inside {
+    0% { 
+        transform: scale(0); 
+    }
+    100% { 
+        transform: scale(1); 
+    }  
+}
+
+.error {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 100;
+    visibility: hidden;
+    color: #bbb;
+    font: 1rem/1 'Roboto Mono', monospace;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.error--visible {
+    visibility: visible;
 }
