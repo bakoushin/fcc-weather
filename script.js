@@ -63,8 +63,8 @@ var animateValue = function(element, value) {
 var updateTemperature = function (type) {
   temp = temperature[type];
   animateValue(temperatureCurrentView, temp.current);
-  animateValue(temperatureMaxView, temp.max);
-  animateValue(temperatureMinView, temp.min);
+  temperatureMaxView.text(temp.max);
+  temperatureMinView.text(temp.min);
   if (type == 'celsius') {
     celsiusButton.addClass('units__element--selected');
     fahrenheitButton.removeClass('units__element--selected');
