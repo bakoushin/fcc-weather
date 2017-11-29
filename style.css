@@ -31,7 +31,7 @@ body {
     height: 100%; 
     background-color: inherit;
     opacity: .33;
-    transition: 5s ease opacity;
+    transition: .5s ease opacity;
 }
 
 .container--faded::before {
