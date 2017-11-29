@@ -1,6 +1,11 @@
 * {
     box-sizing: border-box;
 }
+
+body {
+  /* fix for webkit rendering */
+  -webkit-font-smoothing: antialiased;
+}
     
 .container {
     position: absolute;
