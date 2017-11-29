@@ -23,14 +23,14 @@ var Temperature = function () {
 }
 
 var temperature = {
-  'celsius': new Temperature(),
-  'fahrenheit': new Temperature(),
-  'setTemperatureType': function (temperatureType) {
+  celsius: new Temperature(),
+  fahrenheit: new Temperature(),
+  setTemperatureType: function (temperatureType) {
     if (this._isLocalStorageAvailable()) {
       localStorage.setItem(this._localStorageKey, temperatureType);
     }
   },
-  'getTemperatureType': function () {
+  getTemperatureType: function () {
     if (this._isLocalStorageAvailable()) {
       temperatureType = localStorage.getItem(this._localStorageKey) || 'celsius';
     } else {
@@ -38,9 +38,9 @@ var temperature = {
     }
     return temperatureType;
   },
-  '_localStorageKey': 'fccLocalWeather_temperatureType',
+  _localStorageKey: 'fccLocalWeather_temperatureType',
   // see: https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#Feature-detecting_localStorage
-  '_isLocalStorageAvailable': function() {
+  _isLocalStorageAvailable: function() {
     try {
       if (!window.localStorage) return false;
       else return true;
