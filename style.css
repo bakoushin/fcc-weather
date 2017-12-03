@@ -76,9 +76,6 @@ body {
     width: 3rem;
     height: 3rem;
     margin-left: .5rem;
-}
-
-.weather-description__image {
     -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(grayScale=1)";
     filter: grayscale(100%);    
 }
@@ -167,9 +164,14 @@ body {
     margin: 1rem 0 .2rem;
     font: .66rem/2.5 'Roboto Mono', monspace;
     color: #fff;
-    opacity: .9;
+    opacity: 0;
     text-align: center;
+    transition: .5s ease opacity;
 }
+
+.author--visible {
+    opacity: .9;
+}    
 
 .author__link,
 .author__link:link,

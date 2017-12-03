@@ -116,7 +116,7 @@ if (!navigator.geolocation) {
       updateTemperature(temperatureType);
 
       weatherTextView.text(weatherText);
-      if (weatherIconSrc) weatherIconView.append($(`<img src="${weatherIconSrc}" class="weather-description__image">`));
+      if (weatherIconSrc) weatherIconView.append($(`<img src="${weatherIconSrc}" class="weather-description__icon">`));
 
       humidityView.text(humidity);
       pressureView.text(dPaToMmHg(pressure));
@@ -173,6 +173,7 @@ if (!navigator.geolocation) {
         var author = `Photo by <a class="author__link" href="${authorProfile + unsplashUTM}" target="_blank">${authorName}</a> /
         <a class="author__link" href="https://unsplash.com${unsplashUTM}" target="_blank">Unsplash</a>`;
         authorView.html(author);
+        authorView.addClass('author--visible');
       });
     })
     .catch(function (error) {
