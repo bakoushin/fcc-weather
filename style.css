@@ -161,7 +161,7 @@ body {
 
 .author {
     width: 100%;
-    margin: 1rem 0 .2rem;
+    margin: 1rem 0 1.5rem;
     font: .66rem/2.5 'Roboto Mono', monspace;
     color: #fff;
     opacity: 0;
@@ -170,7 +170,7 @@ body {
 }
 
 .author--visible {
-    opacity: .9;
+    opacity: .66;
 }    
 
 .author__link,
