@@ -124,7 +124,9 @@ if (!navigator.geolocation) {
       });
       
       weatherTextView.text(weatherText);
-      if (weatherIconSrc) weatherIconView.append($(`<img src="${weatherIconSrc}" class="weather-description__icon">`));
+      if (weatherIconSrc) {
+        weatherIconView.append($(`<img src="${weatherIconSrc}" class="weather-description__icon">`));
+      }
 
       humidityView.text(humidity);
       pressureView.text(dPaToMmHg(pressure));
