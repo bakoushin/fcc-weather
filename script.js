@@ -50,19 +50,28 @@ var temperature = {
   }
 };
 
+// animate incrementing/decrementing number
 var animateValue = function(element, value) {
-  return element.animate({
-    counter: value
-  }, {
-    step: function (now) {
-        $(this).text(Math.floor(now));
-    }
-  });
+  return element
+    .prop('_counter', element.text())
+    .animate({
+      _counter: value
+    }, {
+      step: function (now) {
+          $(this).text(Math.floor(now));
+      }
+    });
 }
 
-var updateTemperature = function (type) {
+var updateTemperature = function (params) {
+  var type = params.type || 'celsius';
+  var animate = params.animate || false;
   temp = temperature[type];
-  animateValue(temperatureCurrentView, temp.current);
+  if (animate) {
+    animateValue(temperatureCurrentView, temp.current);
+  } else {
+    temperatureCurrentView.text(temp.current);
+  }
   temperatureMaxView.text(temp.max);
   temperatureMinView.text(temp.min);
   if (type == 'celsius') {
@@ -77,12 +86,12 @@ var updateTemperature = function (type) {
 
 celsiusButton.click(function (event) {
   event.preventDefault();
-  updateTemperature('celsius');
+  updateTemperature({ type: 'celsius', animate: true});
 });
 
 fahrenheitButton.click(function (event) {
   event.preventDefault();
-  updateTemperature('fahrenheit');
+  updateTemperature({ type: 'fahrenheit', animate: true});
 });
 
 if (!navigator.geolocation) {
@@ -113,8 +122,8 @@ if (!navigator.geolocation) {
       temperature.fahrenheit.min = celsiusToFahrenheit(tempMin);
 
       var temperatureType = temperature.getTemperatureType();
-      updateTemperature(temperatureType);
-
+      updateTemperature({type: temperatureType, animate: false});
+      
       weatherTextView.text(weatherText);
       if (weatherIconSrc) weatherIconView.append($(`<img src="${weatherIconSrc}" class="weather-description__icon">`));
 
