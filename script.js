@@ -137,7 +137,7 @@ if (!navigator.geolocation) {
       hideLoader();
     })
     .catch(function (error) {
-      console.log(error);
+      showError('Oops! Could not get weather information.');
     });
 
     weatherRequest.then(function () {
@@ -153,7 +153,6 @@ if (!navigator.geolocation) {
     })
     .catch(function (error) {
       setLocationView();
-      console.log(error);
     });
 
     var setLocationView = function(country) {
@@ -185,9 +184,6 @@ if (!navigator.geolocation) {
         var author = 'Photo by <a class="author__link" href="' + authorProfile + unsplashUTM + '" target="_blank">' + authorName + '</a> / <a class="author__link" href="https://unsplash.com' + unsplashUTM + '" target="_blank">Unsplash</a>';
         authorView.html(author).addClass('author--visible');
       });
-    })
-    .catch(function (error) {
-      console.log(error);
     });
   }, function(err) {
     showError('Oops! ' + err.message + ' (error code: ' + err.code + ')');
