@@ -20,28 +20,51 @@ var errorView = $('#error-js');
 var errorContentView = $('#error-content-js');
 
 var temperature = (function() {
+
+  var LOCAL_STORAGE_KEY = 'fccLocalWeather:temperatureUnits';
+  
+  var units = restoreUnitsFromLocalStorage() || CELSIUS;
+  var data;
   
   return {
-    celsius: {
-      current: 0,
-      max: 0,
-      min: 0
-    },
-    fahrenheit: {
-      current: 0,
-      max: 0,
-      min: 0
-    },
-    switchUnits: switchUnits,
-    getUnits: getUnits
+    setData: setData,
+    setUnits: setUnits
   };
 
-  var localStorageKey = 'fccLocalWeather:temperatureUnits';
+  function setData (current, max, min) {
+    current = Math.round(current);
+    max = Math.round(max);
+    min = Math.round(min);
 
-  function switchUnits (params) {
-    var units = params.units;
+    data = { 
+      celsius: {
+        current: current,
+        max: max,
+        min: min
+      },
+      fahrenheit: {
+        current: celsiusToFahrenheit(current),
+        max: celsiusToFahrenheit(max),
+        min: celsiusToFahrenheit(min)
+      }
+    };
+
+    display({
+      animate: false
+    });
+  }
+
+  function setUnits(params) {
+    units = params.units;
     var animate = params.animate;
-    var temp = this[units];
+    display({
+      animate: animate
+    })
+  }
+
+  function display (params) {
+    var animate = params.animate;
+    var temp = data[units];
     if (animate) {
       temperatureCurrentView.animateValueChange(temp.current);
     } else {
@@ -61,13 +84,9 @@ var temperature = (function() {
     saveUnitsInLocalStorage(units);
   };
 
-  function getUnits () {
-    return restoreUnitsFromLocalStorage() || CELSIUS;
-  }
-
   function saveUnitsInLocalStorage (units) {
     if (isLocalStorageAvailable()) {
-      localStorage.setItem(localStorageKey, units);
+      localStorage.setItem(LOCAL_STORAGE_KEY, units);
     }
   };
 
@@ -75,7 +94,7 @@ var temperature = (function() {
     if (!isLocalStorageAvailable()) {
       return undefined;
     }
-    return localStorage.getItem(localStorageKey);
+    return localStorage.getItem(LOCAL_STORAGE_KEY);
   };
 
   // see: https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#Feature-detecting_localStorage
@@ -88,11 +107,15 @@ var temperature = (function() {
     }
   };
 
+  function celsiusToFahrenheit (temp) {
+    return Math.round(temp * 9 / 5 + 32);
+  }
+
 })();
 
 celsiusButton.click(function (event) {
   event.preventDefault();
-  temperature.switchUnits({
+  temperature.setUnits({
     units: CELSIUS,
     animate: true
   });
@@ -100,7 +123,7 @@ celsiusButton.click(function (event) {
 
 fahrenheitButton.click(function (event) {
   event.preventDefault();
-  temperature.switchUnits({ 
+  temperature.setUnits({ 
     units: FAHRENHEIT,
     animate: true
   });
@@ -127,18 +150,7 @@ if (!navigator.geolocation) {
       var weatherText = weatherData.weather[0].main;
       var weatherIconSrc = weatherData.weather[0].icon;
       
-      temperature.celsius.current = Math.round(tempCurrent);
-      temperature.celsius.max = Math.round(tempMax);
-      temperature.celsius.min = Math.round(tempMin);
-
-      temperature.fahrenheit.current = celsiusToFahrenheit(tempCurrent);
-      temperature.fahrenheit.max = celsiusToFahrenheit(tempMax);
-      temperature.fahrenheit.min = celsiusToFahrenheit(tempMin);
-
-      temperature.switchUnits({
-        units: temperature.getUnits(), 
-        animate: false
-      });
+      temperature.setData(tempCurrent, tempMax, tempMin);
       
       weatherTextView.text(weatherText);
       if (weatherIconSrc) {
@@ -214,11 +226,6 @@ function showError (text) {
 function hideLoader () {
   loaderView.addClass('loader--hidden');
   loaderContentView.addClass('loader__content--hidden');
-}
-
-// convert temperature form Celsius to Fahrenheit degrees
-function celsiusToFahrenheit (temp) {
-  return Math.round(temp * 9 / 5 + 32);
 }
 
 // convert pressure from dPa to mmHg
