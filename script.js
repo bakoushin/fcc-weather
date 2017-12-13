@@ -19,20 +19,28 @@ var authorView = $('#author-js');
 var errorView = $('#error-js');
 var errorContentView = $('#error-content-js');
 
-var temperature = {
-  celsius: {
-    current: 0,
-    max: 0,
-    min: 0
-  },
-  fahrenheit: {
-    current: 0,
-    max: 0,
-    min: 0
-  },
-  switchUnits: function (params) {
-    var units = params.units || CELSIUS;
-    var animate = params.animate || true;
+var temperature = (function() {
+  
+  return {
+    celsius: {
+      current: 0,
+      max: 0,
+      min: 0
+    },
+    fahrenheit: {
+      current: 0,
+      max: 0,
+      min: 0
+    },
+    switchUnits: switchUnits,
+    getUnits: getUnits
+  };
+
+  var localStorageKey = 'fccLocalWeather:temperatureUnits';
+
+  function switchUnits (params) {
+    var units = params.units;
+    var animate = params.animate;
     var temp = this[units];
     if (animate) {
       temperatureCurrentView.animateValueChange(temp.current);
@@ -50,30 +58,37 @@ var temperature = {
     if (units == FAHRENHEIT) {
       fahrenheitButton.addClass('units__element--selected');
     }
-    this.saveUnitsInLocalStorage(units);
-  },
-  saveUnitsInLocalStorage: function (units) {
-    if (this._isLocalStorageAvailable()) {
-      localStorage.setItem(this._localStorageKey, units);
+    saveUnitsInLocalStorage(units);
+  };
+
+  function getUnits () {
+    return restoreUnitsFromLocalStorage() || CELSIUS;
+  }
+
+  function saveUnitsInLocalStorage (units) {
+    if (isLocalStorageAvailable()) {
+      localStorage.setItem(localStorageKey, units);
     }
-  },
-  restoreUnitsFromLocalStorage: function () {
-    if (!this._isLocalStorageAvailable()) {
+  };
+
+  function restoreUnitsFromLocalStorage () {
+    if (!isLocalStorageAvailable()) {
       return undefined;
     }
-    return localStorage.getItem(this._localStorageKey);
-  },
-  _localStorageKey: 'fccLocalWeather:temperatureUnits',
+    return localStorage.getItem(localStorageKey);
+  };
+
   // see: https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#Feature-detecting_localStorage
-  _isLocalStorageAvailable: function() {
+  function isLocalStorageAvailable () {
     try {
       if (!window.localStorage) return false;
       else return true;
     } catch(err) {
       return false;
     }
-  },
-};
+  };
+
+})();
 
 celsiusButton.click(function (event) {
   event.preventDefault();
@@ -119,7 +134,7 @@ if (!navigator.geolocation) {
       temperature.fahrenheit.min = celsiusToFahrenheit(tempMin);
 
       temperature.switchUnits({
-        units: temperature.restoreUnitsFromLocalStorage(), 
+        units: temperature.getUnits(), 
         animate: false
       });
       
