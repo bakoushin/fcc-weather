@@ -30,7 +30,7 @@ var temperature = {
     max: 0,
     min: 0
   },
-  toggleUnits: function (params) {
+  switchUnits: function (params) {
     var units = params.units || CELSIUS;
     var animate = params.animate || true;
     var temp = this[units];
@@ -77,7 +77,7 @@ var temperature = {
 
 celsiusButton.click(function (event) {
   event.preventDefault();
-  temperature.toggleUnits({
+  temperature.switchUnits({
     units: CELSIUS,
     animate: true
   });
@@ -85,7 +85,7 @@ celsiusButton.click(function (event) {
 
 fahrenheitButton.click(function (event) {
   event.preventDefault();
-  temperature.toggleUnits({ 
+  temperature.switchUnits({ 
     units: FAHRENHEIT,
     animate: true
   });
@@ -118,7 +118,7 @@ if (!navigator.geolocation) {
       temperature.fahrenheit.max = celsiusToFahrenheit(tempMax);
       temperature.fahrenheit.min = celsiusToFahrenheit(tempMin);
 
-      temperature.toggleUnits({
+      temperature.switchUnits({
         units: temperature.restoreUnitsFromLocalStorage(), 
         animate: false
       });
