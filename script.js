@@ -158,26 +158,23 @@ if (!navigator.geolocation) {
     });
 
     // get country full name
+    var countryFullName;
     weatherRequest.then(function () {
       var countryAlphaCode = weatherData.sys.country;
       return $.ajax('https://restcountries.eu/rest/v2/alpha/' + countryAlphaCode);
     })
     .then(function (res) {
       if (res && res.name) {
-        setLocationView(res.name);
+        countryFullName = res.name;
       } else {
-        setLocationView();
+        throw new Error;
       }
     })
-    .catch(function (error) {
-      setLocationView();
-    });
-
-    var setLocationView = function(country) {
+    .always(function () {
       var location = weatherData.name;
-      var countryName = country || weatherData.sys.country;
-      locationView.text(location +', ' + countryName);
-    }
+      var countryName = countryFullName || weatherData.sys.country;
+      locationView.text(location + ', ' + countryName);
+    });
 
     // get background image
     weatherRequest.then(function () {
