@@ -113,6 +113,8 @@ if (!navigator.geolocation) {
     var latitude = location.coords.latitude;
     var longitude = location.coords.longitude;
     var weatherData; // for sharing weather data between promises
+
+    // get weather data
     var weatherRequest = $.ajax('https://fcc-weather-api.glitch.me/api/current?lat=' + latitude + '&lon=' + longitude)
     .then(function (res) {
       weatherData = res;
@@ -155,6 +157,7 @@ if (!navigator.geolocation) {
       showError('Oops! Could not get weather information.');
     });
 
+    // get country full name
     weatherRequest.then(function () {
       var countryAlphaCode = weatherData.sys.country;
       return $.ajax('https://restcountries.eu/rest/v2/alpha/' + countryAlphaCode);
@@ -176,6 +179,7 @@ if (!navigator.geolocation) {
       locationView.text(location +', ' + countryName);
     }
 
+    // get background image
     weatherRequest.then(function () {
       var sunrise = weatherData.sys.sunrise * 1000;
       var sunset = weatherData.sys.sunset * 1000;
